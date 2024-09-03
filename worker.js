@@ -4,53 +4,67 @@ addEventListener("fetch", (event) => {
   event.respondWith(handleRequest(event.request));
 });
 
+async function login_dida365(username, password) {
+  const loginResponse = await fetch(
+    "https://api.dida365.com/api/v2/user/signon?wc=true&remember=true",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Device":
+          '{"platform":"web","os":"Windows 10","device":"Chrome 102.0.0.0","name":"","version":4226,"id":"628774331068e7035ea5950b","channel":"website","campaign":"","websocket":""}',
+      },
+      body: JSON.stringify({ username, password }),
+    }
+  );
+
+  if (loginResponse.ok) {
+    const data = await loginResponse.json();
+    return data.token || false;
+  } else {
+    return false;
+  }
+}
+
+// API 操作函数
+async function action_dida365(token, action) {
+  const actionResponse = await fetch(
+    `https://api.dida365.com/api/v2/${action}`,
+    {
+      headers: {
+        Cookie: `t=${token}`,
+      },
+    }
+  );
+
+  if (actionResponse.ok) {
+    return actionResponse.text();
+  } else {
+    return JSON.stringify({ error: true, message: "API request failed" });
+  }
+}
+
 async function handleRequest(request) {
   const url = new URL(request.url);
   const action = url.searchParams.get("action") || "default";
 
-  // 登录函数
-  async function login_dida365(username, password) {
-    const loginResponse = await fetch(
-      "https://api.dida365.com/api/v2/user/signon?wc=true&remember=true",
+  const username = request.headers.get("X-TickTick-Username");
+  const password = request.headers.get("X-TickTick-Password");
+
+  if (!username || !password) {
+    return new Response(
+      JSON.stringify({ error: true, message: "Missing credentials" }),
       {
-        method: "POST",
+        status: 401,
         headers: {
           "Content-Type": "application/json",
-          "X-Device":
-            '{"platform":"web","os":"Windows 10","device":"Chrome 102.0.0.0","name":"","version":4226,"id":"628774331068e7035ea5950b","channel":"website","campaign":"","websocket":""}',
-        },
-        body: JSON.stringify({ username, password }),
-      }
-    );
-
-    if (loginResponse.ok) {
-      const data = await loginResponse.json();
-      return data.token || false;
-    } else {
-      return false;
-    }
-  }
-
-  // API 操作函数
-  async function action_dida365(token, action) {
-    const actionResponse = await fetch(
-      `https://api.dida365.com/api/v2/${action}`,
-      {
-        headers: {
-          Cookie: `t=${token}`,
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
-
-    if (actionResponse.ok) {
-      return actionResponse.text();
-    } else {
-      return JSON.stringify({ error: true, message: "API request failed" });
-    }
   }
 
-  // 使用环境变量
-  const token = await login_dida365(TICKTICK_USERNAME, TICKTICK_PASSWORD);
+  const token = await login_dida365(username, password);
 
   if (token) {
     let response;
