@@ -4,13 +4,7 @@
 
 ---
 
-# 1. 配置方式
-
-修改 `ticktick.php` 文件第 32 行，将 `email` 替换为滴答清单的邮箱，`password` 替换为滴答清单的密码。
-
----
-
-# 2. 使用方法
+# 1. 使用方法
 
 举个例子，获取任务组与任务列表：
 
@@ -43,11 +37,13 @@
 
 ---
 
-# 3. 部署到 Cloudflare Worker
+# 2. 部署到 Cloudflare Worker
 
 您可以轻松地将此 API 部署到 Cloudflare Worker。只需点击下面的按钮即可开始部署过程：
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/0x11-dev/dida365api)
+
+# 3. 配置方式
 
 部署后，您需要在 Cloudflare Worker 的环境变量中设置以下值：
 
