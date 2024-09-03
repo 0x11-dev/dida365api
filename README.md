@@ -47,7 +47,7 @@
 
 您可以轻松地将此 API 部署到 Cloudflare Worker。只需点击下面的按钮即可开始部署过程：
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/jshensh/Dida365Api)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/0x11-dev/dida365api)
 
 部署后，您需要在 Cloudflare Worker 的环境变量中设置以下值：
 
