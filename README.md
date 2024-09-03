@@ -8,7 +8,7 @@
 
 举个例子，获取任务组与任务列表：
 
-[https://lab.sangsir.com/api/ticktick.php?action=list](https://lab.sangsir.com/api/ticktick.php?action=list)
+[https://ticktick.editors.workers.dev/?action=list](https://ticktick.editors.workers.dev/?action=list)
 
 ```json
 {
@@ -43,11 +43,15 @@
 
 [![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/0x11-dev/dida365api)
 
-# 3. 配置方式
+# 3. 使用方式
 
-部署后，您需要在 Cloudflare Worker 的环境变量中设置以下值：
+在发送请求时,需要在 header 中包含以下信息:
 
-- `TICKTICK_USERNAME`: 您的滴答清单邮箱
-- `TICKTICK_PASSWORD`: 您的滴答清单密码
+- `X-TickTick-Username`: 您的滴答清单邮箱
+- `X-TickTick-Password`: 您的滴答清单密码
 
-设置完成后，您就可以通过 Cloudflare Worker 提供的 URL 来访问 API 了。
+例如,使用 curl 发送请求:
+
+```bash
+curl -H "X-TickTick-Username: your_email@example.com" -H "X-TickTick-Password: your_password" https://your-worker.your-subdomain.workers.dev?action=list
+```
